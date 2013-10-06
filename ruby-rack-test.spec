@@ -8,12 +8,10 @@ Group:		Development/Libraries
 Source0:	http://rubygems.org/downloads/%{pkgname}-%{version}.gem
 # Source0-md5:	b1182b682a76424352f140989fd790a6
 URL:		http://github.com/brynary/rack-test
-BuildRequires:	rpmbuild(macros) >= 1.484
-BuildRequires:	ruby >= 1:1.8.6
-BuildRequires:	ruby-modules
-Requires:	ruby-rack
-%{?ruby_mod_ver_requires_eq}
-#BuildArch:	noarch
+BuildRequires:	rpm-rubyprov
+BuildRequires:	rpmbuild(macros) >= 1.656
+Requires:	ruby-rack >= 1.0
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -47,21 +45,20 @@ ri documentation for %{pkgname}.
 Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
-%setup -q -c
-%{__tar} xf %{SOURCE0} -O data.tar.gz | %{__tar} xz
-find -newer README.rdoc -o -print | xargs touch --reference %{SOURCE0}
+%setup -q -n %{pkgname}-%{version}
 
 %build
 rdoc --ri --op ri lib
 rdoc --op rdoc lib
-rm -r ri/Rack/cdesc-Rack.yaml
+rm ri/Rack/cdesc-Rack.ri
 rm ri/created.rid
+rm ri/cache.ri
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{ruby_rubylibdir},%{ruby_ridir},%{ruby_rdocdir}}
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_ridir},%{ruby_rdocdir}}
 
-cp -a lib/* $RPM_BUILD_ROOT%{ruby_rubylibdir}
+cp -a lib/* $RPM_BUILD_ROOT%{ruby_vendorlibdir}
 cp -a ri/* $RPM_BUILD_ROOT%{ruby_ridir}
 cp -a rdoc $RPM_BUILD_ROOT%{ruby_rdocdir}/%{name}-%{version}
 
@@ -71,9 +68,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc History.txt README.rdoc
-%{ruby_rubylibdir}/rack/test
-%{ruby_rubylibdir}/rack/test.rb
-%{ruby_rubylibdir}/rack/mock_session.rb
+%{ruby_vendorlibdir}/rack/test.rb
+%{ruby_vendorlibdir}/rack/test
+%{ruby_vendorlibdir}/rack/mock_session.rb
 
 %files rdoc
 %defattr(644,root,root,755)
@@ -81,5 +78,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ri
 %defattr(644,root,root,755)
-%{ruby_ridir}/Rack/MockSession
 %{ruby_ridir}/Rack/Test
