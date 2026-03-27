@@ -1,13 +1,13 @@
 %define pkgname rack-test
 Summary:	Small, simple testing API for Rack apps
 Name:		ruby-%{pkgname}
-Version:	0.6.2
-Release:	3
+Version:	2.2.0
+Release:	1
 License:	MIT
 Group:		Development/Libraries
 Source0:	http://rubygems.org/downloads/%{pkgname}-%{version}.gem
-# Source0-md5:	cfb89a03ea96b80d2c82ce88168a6ae3
-URL:		http://github.com/brynary/rack-test
+# Source0-md5:	43176134efc715ff4bcf3fa2147fcddc
+URL:		https://github.com/rack/rack-test
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.665
 Requires:	ruby-rack >= 1.0
@@ -71,10 +71,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc History.txt README.rdoc
+%doc History.md MIT-LICENSE.txt README.md
 %{ruby_vendorlibdir}/rack/test.rb
 %{ruby_vendorlibdir}/rack/test
-%{ruby_vendorlibdir}/rack/mock_session.rb
 %{ruby_specdir}/%{pkgname}-%{version}.gemspec
 
 %files rdoc
